@@ -12,7 +12,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 import java.io.IOException;
 
-@MapperScan("com.elgb.mapper")
+@MapperScan("com.mapper")
 @Configuration
 public class MyBatisConfig {
     @Bean
