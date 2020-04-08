@@ -1,6 +1,4 @@
-/*
- *
- */
+
 package com.lly.interceptor;
 
 import com.lly.util.user.SessionUtil;
