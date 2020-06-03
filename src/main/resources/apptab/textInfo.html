@@ -1,0 +1,121 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>恩干院智慧校园</title>
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript">
+$(function(){
+	var result;
+	var url=window.location.search; //获取url中"?"符后的字串  
+	if(url.indexOf("?")!=-1){
+	result = url.substr(url.indexOf("=")+1);
+	$.ajax({
+		 type:"post",
+		   dataType:"json",
+		   url:"/MsgPush/getMessageByone.do?msg_id="+result,
+		   data:{},
+		   contentType:false,
+		   processData:false,
+		   success:function(json){
+			   //判断是否为
+			   if(json.data.title.indexOf("A*")!=-1){
+				   var datas=json.data.title;
+				   var list=json.data.title.split("A*");
+				   var url="<a href='backlog.html?projectId="+list[1]+"'>"+datas+"</a>"
+					   //'<a href="backlog.html?projectId="'+list[1]+'>'+datas+'</a>'
+				   $("#title").html(url); 
+				   $("#date").html("<a href='backlog.html?projectId="+list[1]+"'>"+json.data.date+"</a>");
+					$("#content").html("<a href='backlog.html?projectId="+list[1]+"'>"+json.data.content+"</a>");
+			   }else{
+				   $("#title").html(json.data.title); 
+				  $("#date").html(json.data.date);
+				  $("#content").html(json.data.content);
+			   }
+			 
+			   
+		   }
+	})
+	}
+})
+
+
+</script>
+</head>
+<body>
+<section class="liui-flexView"> 
+  <header class="liui-navBar liui-navBar-fixed">
+                <a href="javascript:;"  onClick="javascript :history.back(-1);" class="liui-navBar-item">
+                    <i class="icon icon-return"></i>
+                </a>
+                <div class="liui-center">
+                    <span class="liui-center-title">消息通知</span>
+                </div>
+                <a href="javascript:;" class="liui-navBar-item">
+                    <i class="icon icon-scan"></i>
+                </a>
+            </header>
+          
+  
+  <section class="liui-scrollView">
+ 
+   <h2 class="news_title"><span id="title"></span></h2>
+ 
+<div class="liui-page-line"></div>     
+
+<div class="news_time">发送时间：<samp id="date"></samp></div>
+<div class="news_content">
+
+
+
+<p>
+<samp id="content"></samp>
+</p>
+
+
+
+
+
+
+
+</div>
+
+
+
+ 
+  </section>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   <footer class="liui-footer liui-footer-fixed">
+   <a href="index.html" class="liui-tabBar-item"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-room"></i> </span>
+	  <span class="liui-tabBar-item-text">首页</span> </a>
+	  <a href="notelist.html" class="liui-tabBar-item liui-tabBar-item-active"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-notice"></i> </span>
+	  <span class="liui-tabBar-item-text">通知</span> </a>
+	  <a href="project.html" class="liui-tabBar-item ">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-project"></i> </span>
+	  <span class="liui-tabBar-item-text">项目</span> </a>
+	  <a href="course.html" class="liui-tabBar-item ">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-class"></i> </span> 
+	  <span class="liui-tabBar-item-text">课程</span> </a>
+	  
+	  <a href="mine.html" class="liui-tabBar-item">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-my"></i> </span> 
+	  <span class="liui-tabBar-item-text">我的</span> </a> 
+  </footer>
+</section>
+</body>
+</html>

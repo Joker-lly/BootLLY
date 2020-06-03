@@ -1,0 +1,286 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>恩干院智慧校园</title>
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+
+<meta name="description" content="based on widget boxes with 2 different styles" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		
+	    <!--  <link rel="stylesheet" href="../../assets/css/ace-fonts.css" />   -->
+<link rel="stylesheet" href="../../courEvalStyle/css/bootstrap.min.css" /> 
+
+
+<link href="../APP/css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../system/comm/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="../APP/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+		//用ajax达到H5的页面效果
+		$(document).ready(function(){ 
+
+		//var userName="xiaoming"; 
+
+			//alert(userName); 
+		});  
+function save(){
+	// formdata对象将所有的form表单中的数据转换成提交数据，将数据转换成json==={"input标签的name属性":"input标签的value属性","":""}
+	 var commend = jQuery("input[name like 'option']:checked");
+			
+		     var cbpaper="";
+		     if(commend.length!=0){
+					for(var i=0;i<commend.length;i++){
+						if(cbpaper == ""){
+							
+							cbpaper += commend[i].value;
+							
+							
+						}else{	
+							cbpaper += ","+commend[i].value;
+							
+						}
+						
+					}
+					
+		 		}	
+		     var remarkValue="";
+		     var remarkId="";
+		      var remark=jQuery("textarea[name = 'remarkvalue']");	
+		     
+		      if(remark.length!=0){
+		    	  for(var i=0;i<remark.length;i++){
+		    		 //alert(remark[i].id);
+		    			  if(remarkValue==""&&remarkId==""){
+		    				  remarkValue +=remark[i].id+"_"+remark[i].value;
+		    				  remarkId +=remark[i].id
+		    				  
+		    			  }else{
+		    				  remarkValue += "@@"+remark[i].id+"_"+remark[i].value;
+		    				  remarkId +=","+remark[i].id;
+					    		// alert(remarkValue);
+				    	  }
+			    		  
+		    		  }
+		    		 
+		    	  
+		      }
+		      var singleValue="";
+		      var singleId="";
+		      var singleText=jQuery("input[name = 'singleText']");	
+		      if(singleText.length!=0){
+		    	  for(var i=0;i<singleText.length;i++){
+		    		 //alert(remark[i].id);
+		    			  if(singleValue==""&&singleId==""){
+		    				  singleValue +=singleText[i].id+"_"+singleText[i].value;
+		    				  singleId +=singleText[i].id
+		    				  
+		    			  }else{
+		    				  singleValue += "@@"+singleText[i].id+"_"+singleText[i].value;
+		    				  singleId +=","+singleText[i].id;
+					    		// alert(remarkValue);
+				    	  }
+			    		  
+		    		  }
+		    		 
+		    	  
+		      }
+		 var formdata = new FormData($("#dataForm")[0]);
+	$.ajax({
+		type:"post",
+		url:"../Approve/approve_save.do?projectId=${(projectId)!}&columnid=${(columnss.columnid)!}&remark="+remarkValue+"&cbpaper="+cbpaper+"&singleValue="+singleValue,
+		
+		data:formdata,
+		dataType : "json",
+		contentType:false,// false会自动加上正确的Content-Type
+		processData:false,// 避开jquery设定的form表单的默认数据类型【String】
+		success:function(data){//因为后台不是完整的ajax 所以没法从后台传map集合，result没有值。
+			if(data.success==1){
+				alert(data.message);
+				location.reload();
+			}else{
+				alert(data.message);
+			}
+			alert("感谢您的评价");
+			window.location.href="../APP/apptab/index.html";
+		}
+		
+	});
+}
+	
+</script>
+
+</head>
+<body>
+
+  
+  <section class="liui-scrollView">
+
+
+  
+
+     
+  <div class="container">
+	<div class="text-center">
+		<h3>恩来干部学院培训情况综合测评表</h3>
+	</div>
+	<hr>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h5 class="panel-title">班次基本信息</h5>
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label>
+					班次名称：${(projectName)!}
+				</label><br>
+				<label>
+					培训开始时间：${(projectBeginDate)!}
+				</label><br>
+				<label>
+					培训结束时间：${(projectEndDate)!}
+				</label>
+				[#if type==1]
+				<br>
+				<label>
+					课程名称：${(courseName)!}
+				</label><br>
+				<label>
+					授课人：${(teacherName)!}
+				</label>
+				[/#if]
+			</div>
+		</div>
+	</div>
+
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h5 class="panel-title">评价信息</h5>
+		</div>
+		<div class="panel-body">
+			<form id="dataForm" name="dataForm" method="post" enctype="multipart/form-data">
+		    <input type="hidden" id="type" name="type" value="${(type)!}"> 
+		    <input type="hidden" id="projectId" name="projectId" value="${(projectId)!}"> 
+		    <input type="hidden" id="projectName" name="projectName" value="${(projectName)!}"> 
+		    <input type="hidden" id="columnid" name="columnid" value="${(columnss.columnid)!}" /> 
+		    <input type="hidden" id="questionId" name="questionId" value="${(listque.questionId)!}" /> 
+	  		<input type="hidden" id="phoneNumber" name="phoneNumber" value="${(phoneNumber)!}" />
+	  		<input type="hidden" id="msg_id" name="msg_id" value="${(msg_id)!}" />
+		    [#if type==1]
+			[#assign i=0]
+				[#if listPro??]
+					[#list listPro as pro]
+						[#if listque??]
+							[#list listque as que] 
+							[#assign i=i+1]
+								<div class="form-group">
+								<label>
+									${(que.questionTopic)!}
+								</label><br>
+								<!-- 单选按钮 -->
+								[#if que.questionType==1] 
+							        [#list que.sysSurveyOptionInfo as ques]
+							        	[#if ques_index=0]
+							        	<label><input id="option1${(ques.optionId)!}_${i}" name="option1${(que.questionId)!}_${i}" type="radio" value="${i}~${(ques.optionId)!}-${(pro.lessonId)!}" checked="checked">${(ques.optionContent)!} </label>
+							        	[#else]
+							        	<label><input id="option1${(ques.optionId)!}_${i}" name="option1${(que.questionId)!}_${i}" type="radio" value="${i}~${(ques.optionId)!}-${(pro.lessonId)!}" >${(ques.optionContent)!} </label>
+							        	[/#if]
+								    [/#list] 
+								[/#if]
+								<!-- 复选框按钮 -->
+								[#if que.questionType==2]
+									[#list que.sysSurveyOptionInfo as ques] 
+										<label><input type="checkbox" name="option2${(que.questionId)!}_${i}" value="${i}~${(ques.optionId)!}-${(pro.lessonId)!}" id="option2${(ques.optionId)!}_${i}"  check="^0$">${(ques.optionContent)!}</label>
+									[/#list] 
+								[/#if]
+								<!-- 多行填空 -->
+								[#if que.questionType==3] 
+									<textarea name="remarkvalue" id="${(que.questionId)!}" class="form-control" rows="3" verify="|ShowLength&&|Length<250" warning="请输入：您的意见或建议"></textarea>
+							    [/#if]
+							    <!-- 单行填空-->
+							    [#if que.questionType==4] 
+							    	<label><input type="text" class="form-control" id="${(que.questionId)!}" name="singleText" /></label>
+							    [/#if]
+							    </div>
+							[/#list] 
+						[/#if]
+					[/#list] 
+				[/#if]
+			[/#if]
+			
+			[#if type==2]
+			[#assign i=0]
+			    [#if listque??]
+				    [#list listque as que] 
+				  	[#assign i=i+1]
+				  		<div class="form-group">
+							<label>
+								${(que.questionTopic)!}
+							</label><br>
+						[#if que.questionType==1] 
+					    	[#list que.sysSurveyOptionInfo as ques]
+					        	[#if ques_index=0]
+							        	<label><input id="option1${(ques.optionId)!}_${i}" name="option1${(que.questionId)!}_${i}" type="radio" value="${(ques.optionId)!}" checked="checked">${(ques.optionContent)!} </label>
+							        	[#else]
+							        	<label><input id="option1${(ques.optionId)!}_${i}" name="option1${(que.questionId)!}_${i}" type="radio" value="${(ques.optionId)!}" >${(ques.optionContent)!} </label>
+							        	[/#if]
+							[/#list] 
+						[/#if]
+						
+						[#if que.questionType==2]
+							[#list que.sysSurveyOptionInfo as ques] 
+								<label><input type="checkbox" name="option2${(que.questionId)!}" value="${(ques.optionId)!}" id="option2${(ques.optionId)!}"  check="^0$">${(ques.optionContent)!}</label>
+							[/#list] 
+						[/#if]
+						[#if que.questionType==3] 
+						<textarea name="remarkvalue" id="${(que.questionId)!}" class="form-control" rows="3" verify="|ShowLength&&|Length<250" warning="请输入：您的意见或建议"></textarea>
+					    [/#if]
+					    <!-- 单行填空-->
+					    [#if que.questionType==4] 
+					    	<label><input type="text" class="form-control" id="${(que.questionId)!}" name="singleText" /></label>
+					    [/#if]
+					    </div>
+					[/#list] 
+				[/#if]
+			[/#if]	
+			<button type="button"  id="delall" name="submit" class="btn btn-primary btn-block" onclick="save()">提交</button> 
+			<input name="rsCount" type="hidden" id="rsCount" value="12" />	
+		    </form>
+		</div>
+	</div>
+</div>
+	
+  
+     
+  </section>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<section>
+ <footer class="liui-footer liui-footer-fixed"> 
+ <a href="../APP/apptab/index.html" class="liui-tabBar-item">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-room"></i> </span>
+	  <span class="liui-tabBar-item-text">首页</span> </a>
+	  <a href="../APP/apptab/notelist.html" class="liui-tabBar-item liui-tabBar-item-active"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-notice"></i> </span>
+	  <span class="liui-tabBar-item-text">通知</span> </a>
+	  <a href="../APP/apptab/project.html" class="liui-tabBar-item "> <span class="liui-tabBar-item-icon"> <i class="icon icon-project"></i> </span> 
+	  <span class="liui-tabBar-item-text">项目</span> </a>
+	  <a href="../APP/apptab/course.html" class="liui-tabBar-item ">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-class"></i> </span>
+	  <span class="liui-tabBar-item-text">课程</span> </a>
+	  
+	  <a href="../APP/apptab/ine.html" class="liui-tabBar-item"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-my"></i> </span> 
+	  <span class="liui-tabBar-item-text">我的</span> </a>
+  </footer>
+</section>
+</body>
+</html>

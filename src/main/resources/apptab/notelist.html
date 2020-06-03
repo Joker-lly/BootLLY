@@ -1,0 +1,292 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>恩来智慧校园</title>
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="based on widget boxes with 2 different styles" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript">
+
+$(function(){ 
+	var useid=$.cookie("userId");
+   $.ajax({
+	   type:"post",
+	   dataType:"json",
+	   url:"/MsgPush/getMessageList.do?user_id="+useid,
+	   data:{},
+	   contentType:false,
+	   processData:false,
+	   success:function(json){
+		   var datas='';
+		   var listPro=json.data
+		   for (var i = 0; i < listPro.length; i++) {
+			   
+			   if(listPro[i].msg_type==0){
+				var url="textInfo.html?title="+listPro[i].msg_id
+					datas+='<div class="liui-flex b-line">  <a href="'+url+'" class="liui-flex-bb">'
+						+'<div class="liui-name-box liui-flex-bb"><p>通</p></div>'
+						+'<div class="liui-flex-box ">'
+						+'<h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>'
+						+listPro[i].msg_name+'</h5>'
+						+'<p class="sub_intro">'+listPro[i].msg_content+'</p>'
+						+'<p class="sub_intro"><em>'+listPro[i].msg_send_time+'</em></p></div> </a></div>';
+			   }
+			   if(listPro[i].msg_type==1){
+				   var url;
+				   if(listPro[i].msg_name.indexOf("A*")!=-1){
+					 var list=listPro[i].msg_name.split("A*")
+					 url="backlog.html?projectId="+list[1];	
+				   }else{
+					   url="textInfo.html?title="+listPro[i].msg_id
+				   }
+				   datas+='<div class="liui-flex b-line">  <a href="'+url+'" class="liui-flex-bb">'
+						+'<div class="liui-name-box liui-flex-bb"><p>系</p></div>'
+						+'<div class="liui-flex-box ">'
+						+'<h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>'
+						+listPro[i].msg_name+'</h5>'
+						+'<p class="sub_intro">'+listPro[i].msg_content+'</p>'
+						+'<p class="sub_intro"><em>'+listPro[i].msg_send_time+'</em></p></div> </a></div>';
+			   }
+			   if(listPro[i].msg_type==2){
+				   var list=listPro[i].msg_url.split("?");
+				   var msg_id=listPro[i].msg_id;
+				   var phoneNumber=$.cookie("phone");
+				  var url="/Approve/approve_build.do?"+list[1]+"&phoneNumber="+phoneNumber+"&msg_id="+msg_id;
+				   datas+='<div class="liui-flex b-line">  <a href="'+url+'" class="liui-flex-bb">'
+						+'<div class="liui-name-box liui-flex-bb"><p>评</div>'
+						+'<div class="liui-flex-box ">'
+						+'<h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>'
+						+listPro[i].msg_name+'</h5>'
+						+'<p class="sub_intro">'+listPro[i].msg_content+'</p>'
+						+'<p class="sub_intro"><em>'+listPro[i].msg_send_time+'</em></p></div> </a></div>';
+			   }
+			  
+			   if(listPro[i].msg_type==3){
+				   datas+='<div class="liui-flex b-line">  <a href="" class="liui-flex-bb">'
+						+'<div class="liui-name-box liui-flex-bb"><p>批</div>'
+						+'<div class="liui-flex-box ">'
+						+'<h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>'
+						+listPro[i].msg_name+'</h5>'
+						+'<p class="sub_intro">'+listPro[i].msg_content+'</p>'
+						+'<p class="sub_intro"><em>'+listPro[i].msg_send_time+'</em></p></div> </a></div>';
+			   }
+			   if(listPro[i].msg_type==4){
+				   datas+='<div class="liui-flex b-line">  <a href="" class="liui-flex-bb">'
+						+'<div class="liui-name-box liui-flex-bb"><p>批</div>'
+						+'<div class="liui-flex-box ">'
+						+'<h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>'
+						+listPro[i].msg_name+'</h5>'
+						+'<p class="sub_intro">'+listPro[i].msg_content+'</p>'
+						+'<p class="sub_intro"><em>'+listPro[i].msg_send_time+'</em></p></div> </a></div>';
+			   }
+			   if(listPro[i].msg_type==5){
+				   datas+='<div class="liui-flex b-line">  <a href="" class="liui-flex-bb">'
+						+'<div class="liui-name-box liui-flex-bb"><p>车/餐</div>'
+						+'<div class="liui-flex-box ">'
+						+'<h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>'
+						+listPro[i].msg_name+'</h5>'
+						+'<p class="sub_intro">'+listPro[i].msg_content+'</p>'
+						+'<p class="sub_intro"><em>'+listPro[i].msg_send_time+'</em></p></div> </a></div>';
+			   }
+			   
+			   if(listPro[i].msg_type==6){
+				   datas+='<div class="liui-flex b-line">  <a href="" class="liui-flex-bb">'
+						+'<div class="liui-name-box liui-flex-bb"><p>任</div>'
+						+'<div class="liui-flex-box ">'
+						+'<h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>'
+						+listPro[i].msg_name+'</h5>'
+						+'<p class="sub_intro">'+listPro[i].msg_content+'</p>'
+						+'<p class="sub_intro"><em>'+listPro[i].msg_send_time+'</em></p></div> </a></div>';
+			   }
+		
+			   
+			}
+		   $("#divdata").html(datas);	
+		   
+	   },
+	   error:function(XMLResponse){
+		   alert("系统错误")
+	   }
+	   
+   })
+}); 
+
+</script>
+
+
+</head>
+<body class="box_bg">
+<section class="liui-flexView"> 
+  <header class="liui-navBar liui-navBar-fixed">
+                <a href="javascript:;"  onClick="javascript :history.back(-1);" class="liui-navBar-item">
+                    <i class="icon icon-return"></i>
+                </a>
+                <div class="liui-center">
+                    <span class="liui-center-title">消息通知</span>
+                </div>
+                <a href="javascript:;" class="liui-navBar-item">
+                    <i class="icon icon-scan"></i>
+                </a>
+            </header>
+  
+  <section class="liui-scrollView">
+    <div class="liui-padded-t-10 bg_white" id="divdata">
+  <!--   [#if listPro??]
+
+  		<div class="liui-flex b-line"> 
+	        <a href="待办信息.html" class="liui-flex-bb">
+	          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+	          <div class="liui-flex-box ">
+		            <h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>填写《共共产党共共用和发展》评价</h5>
+		            <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+		            <p class="sub_intro"><em>2019年1月3日</em></p>
+	          </div>
+	         </a>
+         </div>
+    [/#if]	 -->
+        
+      
+         
+<!--         <div class="liui-flex b-line"> <a href="普通信息.html" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>信</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>江苏省培训班课程安排待评价填写《共共产党共共用和发展》评价</h5>
+             <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+           <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="调查问卷.html" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>卷</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis"><em class="liui-dot"></em>江苏省培训班课程安排待党共共用和发展评价</h5>
+            <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+            <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+          
+         <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待评价填写《共共产党共共用和发展》评价</h5>
+             <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+           <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>卷</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待党共共用和发展评价</h5>
+            <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+            <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待评价填写《共共产党共共用和发展》评价</h5>
+             <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+           <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待党共共用和发展评价</h5>
+            <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+            <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>卷</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待评价填写《共共产党共共用和发展》评价</h5>
+             <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+           <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待党共共用和发展评价</h5>
+            <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+            <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待评价填写《共共产党共共用和发展》评价</h5>
+             <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+           <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待党共共用和发展评价</h5>
+            <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+            <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex b-line"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待评价填写《共共产党共共用和发展》评价</h5>
+             <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+           <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div>
+        <div class="liui-flex"> <a href="javascript:;" class="liui-flex-bb">
+          <div class="liui-name-box liui-flex-bb"><p>批</p></div>
+          <div class="liui-flex-box ">
+            <h5 class="liui-padded-b-5 liui-ellipsis">江苏省培训班课程安排待党共共用和发展评价</h5>
+            <p class="sub_intro">江苏省培训班课程安排待评价填写,江苏省培训班课程安排待评价填写</p>
+            <p class="sub_intro"><em>2019年1月3日</em></p>
+          </div>
+          </a> </div> -->
+          
+          
+      </div>
+      
+      
+  <div class="no-more-box"><p>已加载所有信息</p></div>
+      
+      
+  </section>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <footer class="liui-footer liui-footer-fixed">
+  <a href="index.html" class="liui-tabBar-item"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-room"></i> </span>
+	  <span class="liui-tabBar-item-text">首页</span> </a>
+	  <a href="notelist.html" class="liui-tabBar-item liui-tabBar-item-active"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-notice"></i> </span>
+	  <span class="liui-tabBar-item-text">通知</span> </a> 
+	  <a href="project.html" class="liui-tabBar-item "> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-project"></i> </span>
+	  <span class="liui-tabBar-item-text">项目</span> </a>
+	  <a href="course.html" class="liui-tabBar-item ">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-class"></i> </span> 
+	  <span class="liui-tabBar-item-text">课程</span> </a>
+	  
+	  <a href="mine.html" class="liui-tabBar-item"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-my"></i> </span>
+	  <span class="liui-tabBar-item-text">我的</span> </a>
+  </footer>
+</section>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>恩干院智慧校园</title>
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript">
+
+$(function(){
+	var result;
+	var url=window.location.search; //获取url中"?"符后的字串  
+	if(url.indexOf("?")!=-1){
+	result = url.substr(url.indexOf("=")+1);
+	$.ajax({
+		   type:"post",
+		   dataType:"json",
+		    url:"/Approve/approve_appAprove.do?projectId="+result, 
+		   /* url:"/MsgPush/getMessageList.do?user_id=1",?projectId=85 */
+		   data:{},
+		   contentType:false,
+		   processData:false,
+		   success:function(json){
+			  var data=json.data; 
+			  $("#dClientName").html(data.dClientName);
+			  $("#linkName").html(data.linkName);
+			  $("#linkMobilePhone").html(data.linkMobilePhone);
+			  $("#dProjectName").html(data.dProjectName)
+			  $("#projectTitle").html(data.projectTitle)
+			  $("#dProjectDays").html(data.dProjectDays+"天")
+			  $("#dProjectStudents").html(data.dProjectStudents+"人")
+			  $("#dStudentLevel").html(data.dStudentLevel)
+			  $("#projectBeginDate").val(data.projectBeginDate);
+			  $("#projectEndinDate").val(data.projectEndDate);
+			  $("#projectBegRegiTime").val(data.projectBegRegiTime);
+			  $("#projectEndRegiTime").val(data.projectEndRegiTime);
+			  $("#petName").html(data.petName);
+			  $("#projectType").html(data.projectType);
+			  $("#projectProperty").html(data.projectProperty);
+			  $("#petName").html(data.petName)
+		   }
+	})
+	}
+	
+})
+  function pass(){
+	var projectid;
+	var url=window.location.search; //获取url中"?"符后的字串  
+	var useid=$.cookie("userId");
+	if(url.indexOf("?")!=-1){
+	projectid = url.substr(url.indexOf("=")+1);
+	
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"/Approve/approve_saveApprove.do?userId="+useid+"&projectId="+projectid+"&type=pass&tag=1",
+		data:{
+			
+		},
+		contentType:false,
+		processData:false,
+		success:function(json){
+			alert("审批成功")
+			window.location.href="../APP/apptab/index.html";
+		}
+	})
+}
+}
+function unpass(){
+	var useid=$.cookie("userId");
+	if(url.indexOf("?")!=-1){
+	projectid = url.substr(url.indexOf("=")+1);
+	
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"/Approve/approve_saveApprove.do?userId="+useid+"&projectId="+projectid+"&type=upApprove&tag=1",
+		data:{},
+		contentType:false,
+		processData:false,
+		success:function(json){
+			alert("转院领导");
+			window.location.href="../APP/apptab/index.html";
+		}
+	})
+	}
+}
+	
+function uppass(){
+	var useid=$.cookie("user_id");
+	if(url.indexOf("?")!=-1){
+	projectid = url.substr(url.indexOf("=")+1);
+	
+	$.ajax({
+		type:"post",
+		dataType:"json",
+		url:"/Approve/approve_saveApprove.do?userId="+useid+"&projectId="+projectid+"&type=unPass&tag=1",
+		data:{},
+		contentType:false,
+		processData:false,
+		success:function(json){
+			alert("驳回成功");
+			window.location.href="../APP/apptab/index.html";
+		}
+	})
+	}
+}
+
+</script>
+</head>
+<body class="box_bg">
+<section class="liui-flexView"> 
+  <header class="liui-navBar liui-navBar-fixed">
+                <a href="javascript:;"  onClick="javascript :history.back(-1);" class="liui-navBar-item">
+                    <i class="icon icon-return"></i>
+                </a>
+                <div class="liui-center">
+                    <span class="liui-center-title">待办信息</span>
+                </div>
+                <a href="javascript:;" class="liui-navBar-item">
+                    <i class="icon icon-scan"></i>
+                </a>
+            </header>
+  
+  <section class="liui-scrollView">
+  <div class="liui-box-item">
+  
+  <h2 class="h2_title">江苏省培训班课程安排待党共共用和发展评价</h2>
+  
+  
+   <div class="liui-wh-box bg_white liui-padded-b-10">
+        
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">委托单位：</div>
+         <div class="liui-flex-box "><span id="dClientName" name="dClientName"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">联系人：</div>
+         <div class="liui-flex-box "><span id="linkName" name="linkName"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">联系电话：</div>
+         <div class="liui-flex-box "><span id="linkMobilePhone" name="linkMobilePhone"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">项目名称：</div>
+         <div class="liui-flex-box "><span id="dProjectName" name="dProjectName"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">项目主题：</div>
+         <div class="liui-flex-box "><span id="projectTitle" name="projectTitle"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">培训天数：</div>
+         <div class="liui-flex-box "><span id="dProjectDays" name="dProjectDays"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">学员人数：</div>
+         <div class="liui-flex-box "><span id="dProjectStudents" name="dProjectStudents"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">学员层次：</div>
+         <div class="liui-flex-box "><span id="dStudentLevel" name="dStudentLevel"></span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">项目性质：</div>
+         <div class="liui-flex-box "><span id="projectProperty" name="projectProperty">机关</span></div>
+          </div>
+          
+           <div class="liui-flex-page">
+           <div class="liui-flex-title">项目类型：</div>
+         <div class="liui-flex-box "><span id="projectType" name="projectType">机关</span></div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">排课周期：</div>
+         <div class="liui-flex-box ">
+         	<input id="projectBeginDate" name="projectBeginDate" type="text" size="20"
+         	                            value="" disabled="disabled"/>
+						&nbsp;&nbsp;至&nbsp;&nbsp;
+			<input id="projectEndinDate" name="projectEndinDate"  type="text" size="20"
+			                             value="" disabled="disabled"/>
+    	  	
+         </div>
+          </div>
+        <div class="liui-flex-page">
+           <div class="liui-flex-title">报道日期：</div>
+         <div class="liui-flex-box ">
+         
+         	<input id="projectBegRegiTime" name="projectBegRegiTime" type="text" size="20"
+         	                            value="" disabled="disabled"/>
+						&nbsp;&nbsp;至&nbsp;&nbsp;
+			<input id="projectEndRegiTime" name="projectEndRegiTime"  type="text" size="20"
+			                             value="" disabled="disabled"/>
+         
+         </div>
+          </div>
+        
+           <div class="liui-flex-page">
+           <div class="liui-flex-title">项目对接人</div>
+         <div class="liui-flex-box "><span id="petName"></span></div>
+          </div>
+      </div>
+  <form action="">
+	   <div class="shenpi_word_box liui-margin-t-15">
+	   <h4>审批意见</h4>
+	   <textarea placeholder="请输入审批意见"></textarea>
+	   </div>
+	  <footer class="liui-sp-footer liui-footer-fixed"> 
+		  <a href="提示信息.html" class="liui-footer-button"><span class="liui-footer-button-text" onclick="unpass()">转院领导审批</span> </a> 
+		 <span class="liui-footer-item-icon" onclick="pass()"> <i class="icon-ok"></i> </span>
+		  <a href="提示信息.html" class="liui-footer-button" onclick="unpass()"><span class="liui-footer-button-text">驳回</span> </a>
+	  </footer>
+   </form>  
+  </section>
+  
+  
+<div id="footer"></div>
+</section>
+</body>
+</html>

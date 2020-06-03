@@ -1,0 +1,100 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>恩干院智慧校园</title>
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" href="../css/zdialog.css" />
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/zdialog.js"></script>
+<script type="text/javascript" src="../js/projectInfo.js"></script>
+<script type="text/javascript" src="../js/tab.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+</head>
+<body class="box_bg">
+<section class="liui-flexView"> 
+  <header class="liui-navBar liui-navBar-fixed">
+                <a href="javascript:;"  onClick="javascript :history.back(-1);" class="liui-navBar-item">
+                    <i class="icon icon-return"></i>
+                </a>
+                <div class="liui-center">
+                    <span class="liui-center-title"  id="proName"></span>
+                </div>
+                <a href="javascript:;" class="liui-navBar-item">
+                    <i class="icon icon-scan"></i>
+                </a>
+            </header>
+  <section class="liui-scrollView">
+<div class="aui-tab" data-ydui-tab>
+                    <ul class="tab-nav tab-nav-fixed">
+                        <li class="tab-nav-item  tab-active">
+                            <a href="javascript:;">
+                                <span>项目</span>
+                            </a>
+                        </li>
+                        <li class="tab-nav-item"  onclick="studnetShow(this)">
+                            <a href="javascript:;">
+                                <span>学员</span>
+                            </a>
+                        </li>
+                        <li class="tab-nav-item" onclick="courseShow(this)">
+                            <a href="javascript:void(0);">
+                                <span>课程</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-nav-40">&nbsp;</div>
+                    <div class="tab-panel">
+                        <div class="tab-panel-item  tab-active">
+						 <div class="liui-wh-box bg_white liui-padded-b-10 liui-margin-l-10  liui-margin-r-10"  id="project">
+				        
+				         </div>                           
+                           
+                        </div>
+	            <div class="tab-panel-item" >
+				<div class="liui-wh-box bg_white liui-padded-b-10 liui-margin-l-10  liui-margin-r-10" id="studentInfo">
+		
+		        
+		 
+		 
+		 
+		          
+		        </div>                         
+	            </div>
+				<div class="tab-panel-item">
+				<div class="liui-wh-box bg_white liui-padded-b-10 liui-margin-l-10  liui-margin-r-10" id="courseInfo">
+
+        
+     			 </div>                         
+                 </div>
+        </div> 
+      </div>
+  <div class="no-more-box"><p>已加载所有信息</p></div>
+      
+      
+  </section>
+  
+  <footer class="liui-footer liui-footer-fixed"> 
+   <a href="index.html" class="liui-tabBar-item"> <span class="liui-tabBar-item-icon"> <i class="icon icon-room"></i> </span> 
+	  <span class="liui-tabBar-item-text">首页</span> </a> 
+	  <a href="notelist.html" class="liui-tabBar-item"> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-notice"></i> </span>
+	  <span class="liui-tabBar-item-text">通知</span> </a> 
+	  <a href="project.html" class="liui-tabBar-item liui-tabBar-item-active">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-project"></i> </span> 
+	  <span class="liui-tabBar-item-text">项目</span> </a>
+	  <a href="course.html" class="liui-tabBar-item "> <span class="liui-tabBar-item-icon"> <i class="icon icon-class"></i> </span> 
+	  <span class="liui-tabBar-item-text">课程</span> </a>
+	 
+	  <a href="mine.html" class="liui-tabBar-item"> <span class="liui-tabBar-item-icon"> <i class="icon icon-my"></i> </span> 
+	  <span class="liui-tabBar-item-text">我的</span> </a>
+  </footer>
+</section>
+
+
+</body>
+</html>

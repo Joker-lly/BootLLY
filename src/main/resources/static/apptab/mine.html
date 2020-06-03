@@ -1,0 +1,230 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>恩干院智慧校园</title>
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+		var petName = $.cookie("petName"); 
+		var im='';
+		im+="  <img id='imghead' border='0' src='../user_base/userImage/photo/HGGL.jpg' width='90'height='90' onclick='$('#previewImg').click();'>";
+		$("#photoShow").html(im);
+		$("h2").text(petName);
+	});
+	 //图片上传预览    IE是用了滤镜。
+    function previewImage(file)
+    {
+    	var userId = $.cookie("userId");
+    	var name = event.target.files[0].name;//获取上传的文件名
+    	/* var relativeUrl=file.baseURI.substring(file.baseURI.indexOf(":")+1);
+    	alert(relativeUrl); */
+      var MAXWIDTH  = 90; 
+      var MAXHEIGHT = 90;
+      var div = document.getElementById('preview');
+      if (file.files && file.files[0])
+      {
+          div.innerHTML ='<img id=imghead onclick=$("#previewImg").click()>';
+          var img = document.getElementById('imghead');
+          img.onload = function(){
+            var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+            img.width  =  rect.width;
+            img.height =  rect.height;
+//             img.style.marginLeft = rect.left+'px';
+            img.style.marginTop = rect.top+'px';
+          }
+          var reader = new FileReader();
+          reader.onload = function(evt){img.src = evt.target.result;}
+          reader.readAsDataURL(file.files[0]);
+      }
+      else //兼容IE
+      {
+        var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+        file.select();
+        var src = document.selection.createRange().text;
+        div.innerHTML = '<img id=imghead>';
+        var img = document.getElementById('imghead');
+        img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+        var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+        status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+        div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+      }
+      $.ajax({
+    	  type:"post",
+			url:"/elgbxy/User/infoChange.do",
+			data:{
+				"user_img" :name,
+				"user_id" :userId,
+				"type":1
+		    	},
+			success:function(data){
+				if(data.status==1){
+					$.DialogByZ.Autofade({Content: "成功!"})
+				}else{
+					$.DialogByZ.Autofade({Content: "账号或密码错误!"})
+				}
+				
+			},error:function(data){
+				$("#alertBtn").click(function(){
+			           $.DialogByZ.Alert({Title: "提示", Content: "系统异常!",BtnL:"确定",FunL:alerts})
+				   });
+				   
+			}	
+      });
+    }
+    function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+        var param = {top:0, left:0, width:width, height:height};
+        if( width>maxWidth || height>maxHeight ){
+            rateWidth = width / maxWidth;
+            rateHeight = height / maxHeight;
+            
+            if( rateWidth > rateHeight ){
+                param.width =  maxWidth;
+                param.height = Math.round(height / rateWidth);
+            }else{
+                param.width = Math.round(width / rateHeight);
+                param.height = maxHeight;
+            }
+        }
+        param.left = Math.round((maxWidth - param.width) / 2);
+        param.top = Math.round((maxHeight - param.height) / 2);
+        return param;
+    }
+	 /*  function clip() {
+	    avatar.imageClipper(function (data) {
+	      alert('裁剪成功，生成的图片已覆盖在上传框内');
+	      console.log(data);
+	      //  将图片上传至后台
+	      avatar.upload({
+	        url: 'http://localhost:3080/profile',
+	        name: 'avatar',
+	        data: {userName: 'hzy0913', info: 'someInfo'},
+	        success: function (data) {
+	          console.log(data)
+	        },
+	        error: function (error) {
+	          console.log(error)
+	        },
+	      });
+	    })
+	  }
+	  function reset() {
+	    avatar.resetImage();
+	  }
+	  //获取上传前信息
+	  function getInfo() {
+	    var fileInfo = avatar.getfileInfo();
+	    console.log(fileInfo);
+	  }
+	  //获取base64
+	  function getdata() {
+	    var urldata = avatar.getDataUrl();
+	    console.log(urldata);
+	  } */
+</script>
+</head>
+<body>
+<section class="liui-flexView"> 
+  <header class="liui-navBar liui-navBar-fixed">
+                <a href="javascript:;"  onClick="javascript :history.back(-1);" class="liui-navBar-item">
+                    <i class="icon icon-return"></i>
+                </a>
+                <div class="liui-center">
+                    <span class="liui-center-title">个人中心</span>
+                </div>
+                
+                <a href="javascript:;" class="liui-navBar-item">
+                    <i class="icon icon-scan"></i>
+                    
+                </a>
+                
+            </header>
+  <section class="liui-scrollView">
+  
+<div class="liui-mine-head">
+
+                    <div class="liui-mine-user">
+                    <!-- <div class="col-sm-9 big-photo">
+                	<div id="preview" id="photoShow">
+                        <img id="imghead" border="0" src="../image/photo_icon.png" width="90" height="90" onclick="$('#previewImg').click();">
+                     </div>         
+                    <input type="file" onchange="previewImage(this)" style="display: none;" id="previewImg">
+                	<input id="uploaderInput" class="uploader__input" style="display: none;" type="file" accept="" multiple="">
+                	 <span class="liui-mine-no">未认证</span>
+                </div> -->
+                <img src="../image/user_img.png" alt="" id="avatar" > 
+                        <!-- <img src="../image/user_img.jpg" alt="" id="avatar" > -->
+                       
+                    </div>
+                    <div class="liui-mine-text">
+                       
+                        <h2 id="pname"></h2>
+                    </div>
+                </div> 
+<div class="liui-page-line"></div>     
+
+
+<div class="liui-icon-box bg_white">
+                    <a class="liui-flex b-line" href="userInfo.html">
+                        <div class="liui-flex-box-hd">
+                          <i class="icon icon-wd"></i>  
+                        </div>
+                        <div class="liui-flex-box">个人信息及修改</div>
+                        <span class="liui-arrow">
+                        </span>
+                    </a>
+                    <a class="liui-flex b-line" href="password.html">
+                        <div class="liui-flex-box-hd">
+                          <i class="icon icon-xm"></i>  
+                        </div>
+                        <div class="liui-flex-box">修改密码</div>
+                        <span class="liui-arrow">
+                        </span>
+                    </a>
+                    <!-- <a class="liui-flex b-line" href="javascript:;">
+                        <div class="liui-flex-box-hd">
+                          <i class="icon icon-set"></i>  
+                        </div>
+                        <div class="liui-flex-box">修改密码</div>
+                        <span class="liui-arrow">
+                        </span>
+                    </a> -->
+                   
+                </div> 
+ <div class="liui-page-line"></div>     
+          <div class="liui-show-button">
+                    <a href="login.html" class="w100">退出账号</a>
+                </div>
+ 
+     
+     
+     
+  </section>
+   <footer class="liui-footer liui-footer-fixed">
+    <a href="index.html" class="liui-tabBar-item">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-room"></i> </span> 
+	  <span class="liui-tabBar-item-text">首页</span> </a>
+	  <a href="notelist.html" class="liui-tabBar-item">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-notice"></i> </span> 
+	  <span class="liui-tabBar-item-text">通知</span> </a> 
+	  <a href="project.html" class="liui-tabBar-item "> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-project"></i> </span>
+	  <span class="liui-tabBar-item-text">项目</span> </a> 
+	  <a href="course.html" class="liui-tabBar-item "> 
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-class"></i> </span>
+	  <span class="liui-tabBar-item-text">课程</span> </a>
+	 
+	  <a href="mine.html" class="liui-tabBar-item liui-tabBar-item-active">
+	  <span class="liui-tabBar-item-icon"> <i class="icon icon-my"></i> </span> 
+	  <span class="liui-tabBar-item-text">我的</span> </a>
+  </footer>
+</section>
+
+</body>
+</html>
