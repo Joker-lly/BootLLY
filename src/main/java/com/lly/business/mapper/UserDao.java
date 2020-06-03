@@ -8,8 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface UserDao {
-   // public UserEntity getUserinfor(String username);
-
+ 
     public List<UserEntity> getUsers();
     //插件分页
     List<Map<String,Object>> getProductByPage(Map<String, Object> map);
