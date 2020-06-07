@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.elgb.mapper.UserDao">
+<mapper namespace="com.lly.business.mapper.UserDao">
 
-    <resultMap id="user" type="com.elgb.entity.UserEntity">
+    <resultMap id="user" type="com.lly.business.entity.UserEntity">
 
         <result column="username" jdbcType="VARCHAR" property="Username" />
              <result column="password" jdbcType="VARCHAR" property="password" />
     </resultMap>
 
-    <select id="getUserinfor" resultType="com.elgb.entity.UserEntity">
+    <select id="getUserinfor" resultType="com.lly.business.entity.UserEntity">
         select * from user where username = #{username}
     </select>
     <select id="getUsers" resultMap="user">
