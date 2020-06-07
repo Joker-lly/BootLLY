@@ -12,8 +12,11 @@ server:
 logging:
   level:
     com:
-      elgb:
-        mapper: debug
+      lly:
+        business:
+          mapper: debug
+
+
 
 
 
