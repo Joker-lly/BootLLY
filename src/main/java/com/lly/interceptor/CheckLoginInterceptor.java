@@ -1,16 +1,20 @@
 
 package com.lly.interceptor;
-
 import com.lly.util.user.SessionUtil;
 import com.lly.util.user.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 登录拦截器
+ *
+ * @author Joker-lly
+ * @since 2020-06-07
+ */
 public class CheckLoginInterceptor implements HandlerInterceptor {
 
     @Autowired
@@ -38,13 +42,4 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
 
     }
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-
-    }
-
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
-    }
 }
