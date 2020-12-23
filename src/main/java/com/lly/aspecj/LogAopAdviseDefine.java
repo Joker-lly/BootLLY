@@ -59,13 +59,13 @@ public class LogAopAdviseDefine {
     public void annotationCut(){}
 
     /**
-     *
+     * this 表示当前产生的代理对象 和 com.lly.business.service.UserService 相等
      */
     @Pointcut( "this(com.lly.business.service.UserService)")
     public void thisCut(){}
 
     /**
-     *
+     * target 表示当前产生的代理对象的目标对象 和 com.lly.business.service.UserService 相等
      */
     @Pointcut( "target(com.lly.business.service.UserService)")
     public void targetCut(){}
