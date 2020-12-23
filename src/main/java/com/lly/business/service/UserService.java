@@ -1,6 +1,7 @@
 package com.lly.business.service;
 
 
+import com.lly.anno.Lly;
 import com.lly.business.entity.UserEntity;
 import com.lly.business.mapper.UserDao;
 import com.lly.util.page.PageUtil;
@@ -25,9 +26,9 @@ public class UserService {
 //    public UserEntity getUser(String username){
 //        return userDao.getUserinfor(username);
 //    }
-    public List<UserEntity> getUsers(){
+    /*public List<UserEntity> getUsers(){
         return userDao.getUsers();
-    }
+    }*/
 
 
     public R getProductByPage(int page, int limit) {
@@ -40,4 +41,10 @@ public class UserService {
         List<Map<String, Object>> productByPage = this.userDao.getProductByPage(map);
         return R.success().data(productByPage).set("count",pageUtil.getCount());
     }
+
+    /**
+     * 测试 Spring Aop 对加有注解的测试
+     */
+    @Lly
+    public void testAnnotation() {}
 }
