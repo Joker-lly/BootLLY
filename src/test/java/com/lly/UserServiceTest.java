@@ -1,6 +1,6 @@
 package com.lly;
 
-import com.lly.business.service.UserService;
+import com.lly.business.service.UserServiceImpl;
 import com.lly.util.page.R;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +16,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class UserServiceTest {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     @Test
     void testUserService() {
-        R productByPage = userService.getProductByPage(1, 10);
-        System.out.println(productByPage);
+        R productByPage = userServiceImpl.getProductByPage(1, 10);
+       // System.out.println(productByPage);
     }
 
     @Test
     void testAnnotation() {
-       userService.testAnnotation();
+       userServiceImpl.testAnnotation();
+    }
+
+
+    @Test
+    void testAround() {
+        userServiceImpl.testAround("str");
     }
 }

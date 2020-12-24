@@ -1,15 +1,14 @@
 package com.lly.aspecj;
 
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
  * 描述: 学习 Spring Aop 演示的例子 以及用法说明
+ * 依赖：在 AppConfig 添加注解 @EnableAspectJAutoProxy
  *
  * @author Joker-lly
  * @since 2020-12-23
@@ -18,6 +17,13 @@ import org.springframework.stereotype.Component;
 @Aspect//切面
 public class LogAopAdviseDefine {
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * @DeclareParents: 扩展类，让一个类多实现另个接口的方法
+     * perthis : 让切面变成多例的
+     * 这两个东西没太理解，以后有时间再来写测试用例
+     * 官方文档的 5.4.5和5.4.6的
+     */
 
     /**
      * 语法如下，摘抄自官方文档 ：https://docs.spring.io/spring-framework/docs/5.3.3-SNAPSHOT/reference/html/core.html#aop-pointcuts-designators
@@ -61,13 +67,13 @@ public class LogAopAdviseDefine {
     /**
      * this 表示当前产生的代理对象 和 com.lly.business.service.UserService 相等
      */
-    @Pointcut( "this(com.lly.business.service.UserService)")
+    @Pointcut( "this(com.lly.business.service.UserServiceImpl)")
     public void thisCut(){}
 
     /**
      * target 表示当前产生的代理对象的目标对象 和 com.lly.business.service.UserService 相等
      */
-    @Pointcut( "target(com.lly.business.service.UserService)")
+    @Pointcut( "target(com.lly.business.service.UserServiceImpl)")
     public void targetCut(){}
 
     /**
@@ -75,13 +81,31 @@ public class LogAopAdviseDefine {
      * （）中可以直接写定义的切点，也可以直接写  execution 等表达式
      * 各个切点之间可以用 与或等符合进行组合
      */
-    @Before("executionPointCut() &&! pointCutArgs()")
+    @Before("executionPointCut() && pointCutArgs()")
     public void before() {
         System.out.println("前置通知");
     }
 
-    @Around("annotationCut()")
-    public void around(){
-        System.out.println("注解环绕通知");
+    /**
+     * 后置通知
+     */
+    @After("executionPointCut() && pointCutArgs()")
+    public void after() {
+        System.out.println("后置通知");
+    }
+    /**
+     * 环绕通知
+     * ProceedingJoinPoint 这个类是方法的对象，可以获得方法的相关属性，例如：方法名称，参数类型及个数，返回类型等
+     * JoinPoint ：ProceedingJoinPoint 的父类，ProceedingJoinPoint。proceed 可以执行目标方法
+     *
+     * @param pjp 当前增强的方法的对象
+     */
+    @Around("execution(* com.lly.business.service.*.testAround(..))")
+    public void around(ProceedingJoinPoint pjp) throws Throwable {
+        System.out.println("环绕通知前");
+
+        pjp.proceed();
+
+        System.out.println("环绕通知后");
     }
 }
