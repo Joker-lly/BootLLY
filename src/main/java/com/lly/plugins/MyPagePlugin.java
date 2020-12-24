@@ -58,7 +58,7 @@ public class MyPagePlugin implements Interceptor {
             // 拿到数据库连接对象
             Connection connection = (Connection)invocation.getArgs()[0];
             String countSql = new StringBuilder("select count(0) from ").append("( ")
-                    .append(sql).append(" )").toString();
+                    .append(sql).append(" ) a ").toString();
             // 渲染参数
             PreparedStatement preparedStatement = connection.prepareStatement(countSql);
             // 交个mybatis处理
