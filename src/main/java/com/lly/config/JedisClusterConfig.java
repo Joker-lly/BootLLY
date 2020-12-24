@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 描述: 配置 redis 集群
+ * 描述: 配置 redis 集群， 该配置文件和RedisConfig有冲突
+ *
  *
  * @author Joker-lly
  * @since 2020-12-24
