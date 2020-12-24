@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -102,6 +103,7 @@ public class LogAopAdviseDefine {
      */
     @Around("execution(* com.lly.business.service.*.testAround(..))")
     public void around(ProceedingJoinPoint pjp) throws Throwable {
+       // new ProxyFactory()
         System.out.println("环绕通知前");
 
         pjp.proceed();
