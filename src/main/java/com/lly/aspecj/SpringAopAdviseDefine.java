@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Aspect//切面
-public class LogAopAdviseDefine {
+public class SpringAopAdviseDefine {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
