@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Joker-lly
  * @since 2020-12-24
  */
-public class Test {
+public class CircularReferenceTest {
     /**
      * 放置创建好的bean Map
      */
