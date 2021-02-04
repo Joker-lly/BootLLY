@@ -41,7 +41,7 @@ public class ChatServer {
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
                             //加入特殊分隔符分包解码器
-                            pipeline.addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer("-".getBytes())));
+                          //  pipeline.addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer("-".getBytes())));
                             // 向 pipeline 添加 解码器 顺序要求？
                             pipeline.addLast("decoder", new StringDecoder());
                             // 向 pipeline 添加 编码器
