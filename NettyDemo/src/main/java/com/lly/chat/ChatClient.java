@@ -47,9 +47,9 @@ public class ChatClient {
                 String s = scanner.nextLine();
                 channel.writeAndFlush(s);
             }
-            for (int i = 0; i < 10; i++) {
+         /*   for (int i = 0; i < 10; i++) {
                 channel.writeAndFlush("hello 大家好，我是Vae，这是我即将发表的自创专辑" +"-");
-            }
+            }*/
             //channel.closeFuture().sync();
 
         }catch (Exception e) {
