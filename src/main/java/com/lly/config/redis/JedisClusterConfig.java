@@ -1,4 +1,4 @@
-package com.lly.config;
+package com.lly.config.redis;
 
 import io.netty.util.Constant;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -17,7 +17,7 @@ import java.util.Set;
  * @author Joker-lly
  * @since 2020-12-24
  */
-@Configuration
+//@Configuration
 public class JedisClusterConfig {
     @Bean
     public JedisCluster getJedisCluster() {

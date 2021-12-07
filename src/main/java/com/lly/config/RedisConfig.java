@@ -3,7 +3,10 @@ package com.lly.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import org.redisson.Redisson;
+import org.redisson.config.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -16,76 +19,67 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import java.time.Duration;
 
-/**
- * redis 配置文件
- *
- * @author Joker-lly
- * @since 2020-06-07
- */
 //@Configuration
-//@EnableCaching
-public class RedisConfig extends CachingConfigurerSupport {
-
-    /**
-     * 选择redis作为默认缓存工具
-
-     * @return
-             */
-  /*  @Bean
-    public CacheManager cacheManager(RedisTemplate redisTemplate) {
-        RedisCacheManager rcm = new RedisCacheManager(redisTemplate);
-        return rcm;
-    }*/
-
-    /**
-     * 定义redis连接配置工厂,
-     * 用配置类的原因是：
-     *      配置文件容易读取不到
-     * @return
-     */
+public class RedisConfig {
     @Bean
-    public RedisConnectionFactory factory(){
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
-        poolConfig.setMaxTotal(8);
-        poolConfig.setMaxIdle(8);
-        poolConfig.setMaxWaitMillis(-1);
-        poolConfig.setMinIdle(8);
-        poolConfig.setTestOnBorrow(true);
-        poolConfig.setTestOnReturn(false);
-        poolConfig.setTestWhileIdle(true);
-        JedisClientConfiguration clientConfig = JedisClientConfiguration.builder()
-                .usePooling().poolConfig(poolConfig).and().readTimeout(Duration.ofMillis(1200)).build();
-        // 单点redis
-        RedisStandaloneConfiguration redisConfig = new RedisStandaloneConfiguration();
-
-        // 哨兵redis
-        // RedisSentinelConfiguration redisConfig = new RedisSentinelConfiguration();
-        // 集群redis
-        // RedisClusterConfiguration redisConfig = new RedisClusterConfiguration();
-
-
-        redisConfig.setHostName("192.168.79.131");
-        redisConfig.setPort(6379);
-        redisConfig.setDatabase(0);
-        JedisConnectionFactory factory=new JedisConnectionFactory(redisConfig,clientConfig);
-
-        return factory;
+    public JedisPoolConfig jedisPoolConfig(){
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(1500);  //最大连接数
+        jedisPoolConfig.setMaxIdle(1500); //最大空闲连接数
+        jedisPoolConfig.setMinIdle(500);   //最小空闲连接数
+        jedisPoolConfig.setMaxWaitMillis(20000); //获取连接时最大等待时间
+        jedisPoolConfig.setTestOnBorrow(true); //获取连接时检查是否可用
+        jedisPoolConfig.setTestOnReturn(true); //返回连接时检查是否可用
+        jedisPoolConfig.setTestWhileIdle(true);  //是否开启空闲资源监测
+        jedisPoolConfig.setTimeBetweenEvictionRunsMillis(300000); //-1不检测   单位为毫秒  空闲资源监测周期
+        jedisPoolConfig.setMinEvictableIdleTimeMillis(30*60*1000);//资源池中资源最小空闲时间 单位为毫秒  达到此值后空闲资源将被移除
+        jedisPoolConfig.setNumTestsPerEvictionRun(300); //做空闲监测时，每次采集的样本数  -1代表对所有连接做监测
+        return jedisPoolConfig;
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+    public Redisson redisson(){
+        Config config=new Config();
+//        config.useSingleServer().setAddress("redis://192.168.0.104:6379").setDatabase(0);
+        config.useClusterServers().addNodeAddress("redis://192.168.0.104:7000").addNodeAddress("redis://192.168.0.104:7001")
+                .addNodeAddress("redis://192.168.0.104:7002").addNodeAddress("redis://192.168.0.104:7003")
+                .addNodeAddress("redis://192.168.0.104:7004").addNodeAddress("redis://192.168.0.104:7005");
+        Redisson redisson = (Redisson) Redisson.create(config);
+        return redisson;
+    }
+
+//    @Bean
+//    public JedisPool jedisPool(JedisPoolConfig jedisPoolConfig){
+//        return new JedisPool(jedisPoolConfig,"192.168.0.104",6379);
+//    }
+
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig jedisPoolConfig){
+        JedisClientConfiguration jedisClientConfiguration = JedisClientConfiguration.builder().usePooling().poolConfig(jedisPoolConfig).and().readTimeout(Duration.ofMillis(2000)).build();
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setDatabase(0);
+        redisStandaloneConfiguration.setPort(6379);
+        redisStandaloneConfiguration.setHostName("192.168.0.104");
+        return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration);
+    }
+
+    @Bean
+    public RedisTemplate<String,Object> redisTemplate(RedisConnectionFactory jedisConnectionFactory) {
+
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         // 配置连接工厂
-        template.setConnectionFactory(factory);
+        template.setConnectionFactory(jedisConnectionFactory);
+
         //使用Jackson2JsonRedisSerializer来序列化和反序列化redis的value值（默认使用JDK的序列化方式）
         Jackson2JsonRedisSerializer jacksonSeial = new Jackson2JsonRedisSerializer(Object.class);
+
         ObjectMapper om = new ObjectMapper();
         // 指定要序列化的域，field,get和set,以及修饰符范围，ANY是都有包括private和public
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         // 指定序列化输入的类型，类必须是非final修饰的，final修饰的类，比如String,Integer等会跑出异常
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        om.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         jacksonSeial.setObjectMapper(om);
-
         // 值采用json序列化
         template.setValueSerializer(jacksonSeial);
         //使用StringRedisSerializer来序列化和反序列化redis的key值
@@ -97,7 +91,6 @@ public class RedisConfig extends CachingConfigurerSupport {
         template.afterPropertiesSet();
         return template;
     }
-
     /**
      * 对hash类型的数据操作
      *

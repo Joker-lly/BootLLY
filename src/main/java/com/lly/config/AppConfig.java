@@ -3,6 +3,7 @@ package com.lly.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
  * @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -12,5 +13,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = false )// 支持aspectJ语法
 @ComponentScan("com.lly")
+
+//@EnableWebMvc
 public class AppConfig {
 }

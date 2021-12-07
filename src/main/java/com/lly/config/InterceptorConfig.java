@@ -1,6 +1,8 @@
 package com.lly.config;
 
 import com.lly.interceptor.CheckLoginInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.*;
@@ -11,8 +13,11 @@ import org.springframework.web.servlet.config.annotation.*;
  * @author Joker-lly
  * @since 2020-06-07
  */
-@Configuration
+//@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
+
+    @Autowired
+    AnnotationConfigApplicationContext annotationConfigApplicationContext;
 
     // 注册自己的拦截器
     @Bean

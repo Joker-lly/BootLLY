@@ -1,10 +1,9 @@
-package com.lly.config;
+package com.lly.config.redis;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisCluster;
 
 /**
@@ -13,7 +12,7 @@ import redis.clients.jedis.JedisCluster;
  * @author Joker-lly
  * @since 2020-12-24
  */
-@Component
+//@Component
 public class JedisTemplate {
     private static final Logger LOGGER = LoggerFactory.getLogger(JedisTemplate.class);
 

@@ -8,6 +8,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
@@ -18,17 +19,20 @@ import java.io.IOException;
  * @author Joker-lly
  * @since 2020-06-07
  */
-@MapperScan("com.mapper")
+@MapperScan("com.lly.business.mapper")
 @Configuration
 public class MyBatisConfig {
     @Bean
     public SqlSessionFactoryBean sqlSessionFactoryBean(@Autowired DataSource dataSource) throws IOException {
         SqlSessionFactoryBean bean=new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+        //bean.setCache();
         PathMatchingResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
         String packageXMLConfigPath = PathMatchingResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "Mapper/*.xml";
-        bean.setPlugins(new Interceptor[]{getMyPagePlugin()});
-        bean.setMapperLocations(resolver.getResources(packageXMLConfigPath));
+        //bean.setPlugins(new Interceptor[]{getMyPagePlugin()});
+        Resource[] resources = resolver.getResources(packageXMLConfigPath);
+        bean.setMapperLocations(resources);
+
         return bean;
     }
 
@@ -50,26 +54,4 @@ public class MyBatisConfig {
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         return dataSource;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
