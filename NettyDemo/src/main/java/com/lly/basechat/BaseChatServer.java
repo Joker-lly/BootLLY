@@ -44,7 +44,7 @@ public class BaseChatServer {
                             pipeline.addLast("encoder", new StringEncoder());
 
                             // 实现心跳连接
-                            pipeline.addLast(new IdleStateHandler(3,0,0, TimeUnit.MILLISECONDS ));
+                           // pipeline.addLast(new IdleStateHandler(3,0,0, TimeUnit.MILLISECONDS ));
                             //对workerGroup的SocketChannel设置处理器
                             pipeline.addLast(new BaseChatServerHandler());
                         }

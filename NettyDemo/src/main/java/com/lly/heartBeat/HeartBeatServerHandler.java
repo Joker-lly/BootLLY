@@ -62,6 +62,7 @@ public class HeartBeatServerHandler extends SimpleChannelInboundHandler<String> 
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
 
+
         // 向所有的 channelGroup 中的所有的 channel 提示 上线信息 排除自己
         channelGroup.writeAndFlush("[客户端]" + channel.remoteAddress() + " 上线了 " +sdf.format(new Date()) + "\n");
         channelGroup.add(channel);

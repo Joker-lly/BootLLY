@@ -98,15 +98,15 @@ public class SpringAopAdviseDefine {
      * 环绕通知
      * ProceedingJoinPoint 这个类是方法的对象，可以获得方法的相关属性，例如：方法名称，参数类型及个数，返回类型等
      * JoinPoint ：ProceedingJoinPoint 的父类，ProceedingJoinPoint。proceed 可以执行目标方法
-     *
+     * execution(* com.lly.business.service.*.*(..))
      * @param pjp 当前增强的方法的对象
      */
-    @Around("execution(* com.lly.business.service.*.testAround(..))")
+    @Around("targetCut()")
     public void around(ProceedingJoinPoint pjp) throws Throwable {
        // new ProxyFactory()
         System.out.println("环绕通知前");
-
-        pjp.proceed();
+        Object[] args = pjp.getArgs();
+        pjp.proceed(args);
 
         System.out.println("环绕通知后");
     }

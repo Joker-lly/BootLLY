@@ -1,10 +1,7 @@
 package com.threads.redis;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -36,6 +33,8 @@ public class CashMap<K, V> {
     }
 
     public synchronized V put(K key, V value, long time) {
+
+        //ThreadPoolExecutor//
         timeMap.put(key, System.currentTimeMillis() + time);
         if (null == scheduler) {
             initTask();

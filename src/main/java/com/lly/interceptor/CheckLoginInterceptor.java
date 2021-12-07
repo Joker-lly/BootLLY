@@ -32,7 +32,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
             response.setContentType("text/html");
             request.setAttribute("name","name");
             //setAttribute("name",name);
-            response.sendRedirect("http://localhost:8081/apptab/login.html");
+            response.sendRedirect("http://localhost:8080/apptab/login.html");
 
 
             return false;

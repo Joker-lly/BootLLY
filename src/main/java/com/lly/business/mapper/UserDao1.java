@@ -1,14 +1,16 @@
 package com.lly.business.mapper;
 
 import com.lly.business.entity.UserEntity;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
-import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface UserDao {
+@Component
+public interface UserDao1 {
  
     public List<UserEntity> getUsers();
     //插件分页
